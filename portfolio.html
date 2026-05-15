@@ -472,6 +472,173 @@
       letter-spacing: 0.04em;
     }
 
+    /* ── RESUME SCREEN ── */
+    .resume-inner {
+      flex: 1;
+      padding-top: 80px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .resume-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    .resume-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .resume-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .upload-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-gold);
+      color: #0f0e0d;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .upload-btn:hover { opacity: 0.85; }
+
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .zoom-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .zoom-btn:hover {
+      border-color: var(--accent-gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    .zoom-level {
+      font-size: 0.8rem;
+      color: var(--muted);
+      min-width: 42px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .zoom-reset {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 0 12px;
+      height: 34px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.04em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .zoom-reset:hover { color: var(--text); border-color: var(--accent-gold); }
+
+    .resume-viewport {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px;
+      background: #1a1816;
+    }
+
+    .resume-viewport::-webkit-scrollbar { width: 6px; height: 6px; }
+    .resume-viewport::-webkit-scrollbar-track { background: transparent; }
+    .resume-viewport::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    .resume-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--muted);
+      height: 100%;
+      min-height: 300px;
+      text-align: center;
+    }
+
+    .resume-empty .empty-icon {
+      font-size: 3rem;
+      opacity: 0.4;
+    }
+
+    .resume-empty p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .resume-empty .drop-hint {
+      font-size: 0.78rem;
+      color: var(--border);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    #pdf-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      transform-origin: top center;
+      transition: transform 0.2s ease;
+    }
+
+    #pdf-container canvas {
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: block;
+    }
+
+    /* drag-over highlight */
+    .resume-viewport.dragover {
+      outline: 2px dashed var(--accent-gold);
+      outline-offset: -12px;
+      background: rgba(201,168,76,0.04);
+    }
+
     /* ── GRID TEXTURE ── */
     .grid-texture {
       position: fixed;
@@ -501,6 +668,7 @@
     <button class="nav-btn" onclick="goTo('sql')">SQL</button>
     <button class="nav-btn" onclick="goTo('ml')">ML</button>
     <button class="nav-btn" onclick="goTo('contact')">Contact</button>
+    <button class="nav-btn" onclick="goTo('resume')">Resume</button>
   </div>
 </nav>
 
@@ -718,29 +886,116 @@
   </div>
 </div>
 
+<!-- ════════════ RESUME ════════════ -->
+<div class="screen" id="resume">
+  <div class="resume-inner">
+    <div class="resume-toolbar">
+      <div class="resume-toolbar-left">
+        <span class="resume-title">Resume</span>
+        <button class="upload-btn" onclick="document.getElementById('pdf-input').click()">
+          ＋ Upload PDF
+        </button>
+        <input type="file" id="pdf-input" accept="application/pdf" style="display:none">
+      </div>
+      <div class="zoom-controls">
+        <button class="zoom-btn" onclick="changeZoom(-0.1)">−</button>
+        <span class="zoom-level" id="zoom-label">100%</span>
+        <button class="zoom-btn" onclick="changeZoom(0.1)">+</button>
+        <button class="zoom-reset" onclick="resetZoom()">Reset</button>
+      </div>
+    </div>
+
+    <div class="resume-viewport" id="resume-viewport">
+      <div class="resume-empty" id="resume-empty">
+        <div class="empty-icon">📄</div>
+        <p>Upload your resume PDF to preview it here</p>
+        <span class="drop-hint">or drag &amp; drop a file</span>
+      </div>
+      <div id="pdf-container"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-  const screens = ['home','powerbi','sql','ml','contact'];
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  const screens = ['home','powerbi','sql','ml','contact','resume'];
   let current = 'home';
 
   function goTo(id) {
     if (id === current) return;
-
     const prev = document.getElementById(current);
     const next = document.getElementById(id);
-
     prev.classList.add('exit');
-    setTimeout(() => {
-      prev.classList.remove('active', 'exit');
-    }, 450);
-
+    setTimeout(() => prev.classList.remove('active', 'exit'), 450);
     next.classList.add('active');
     current = id;
-
-    // update nav
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    const map = { home: 0, powerbi: 1, sql: 2, ml: 3, contact: 4 };
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const map = { home: 0, powerbi: 1, sql: 2, ml: 3, contact: 4, resume: 5 };
     document.querySelectorAll('.nav-btn')[map[id]]?.classList.add('active');
   }
+
+  // ── PDF viewer ──
+  let zoomLevel = 1.0;
+  const MIN_ZOOM = 0.4, MAX_ZOOM = 3.0;
+
+  function updateZoomLabel() {
+    document.getElementById('zoom-label').textContent = Math.round(zoomLevel * 100) + '%';
+    document.getElementById('pdf-container').style.transform = `scale(${zoomLevel})`;
+  }
+
+  function changeZoom(delta) {
+    zoomLevel = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoomLevel + delta));
+    updateZoomLabel();
+  }
+
+  function resetZoom() {
+    zoomLevel = 1.0;
+    updateZoomLabel();
+  }
+
+  // mouse wheel zoom (Ctrl/Cmd + scroll)
+  document.getElementById('resume-viewport').addEventListener('wheel', e => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      changeZoom(e.deltaY < 0 ? 0.1 : -0.1);
+    }
+  }, { passive: false });
+
+  async function renderPDF(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const container = document.getElementById('pdf-container');
+    container.innerHTML = '';
+    document.getElementById('resume-empty').style.display = 'none';
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 1.8 });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      container.appendChild(canvas);
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+    }
+  }
+
+  document.getElementById('pdf-input').addEventListener('change', e => {
+    if (e.target.files[0]) renderPDF(e.target.files[0]);
+  });
+
+  // drag & drop
+  const viewport = document.getElementById('resume-viewport');
+  viewport.addEventListener('dragover', e => { e.preventDefault(); viewport.classList.add('dragover'); });
+  viewport.addEventListener('dragleave', () => viewport.classList.remove('dragover'));
+  viewport.addEventListener('drop', e => {
+    e.preventDefault();
+    viewport.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === 'application/pdf') renderPDF(file);
+  });
 </script>
 
 </body>
