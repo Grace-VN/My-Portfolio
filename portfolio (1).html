@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quynh-Anh Nguyen | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f0e0d;
+      --surface: #1a1916;
+      --border: #2e2c28;
+      --text: #f0ece4;
+      --muted: #8a8680;
+      --accent-gold: #c9a84c;
+      --accent-blue: #4a7fd4;
+      --accent-green: #4aad7a;
+      --card-bg: #1e1c19;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      transform: translateY(20px);
+      overflow: hidden;
+    }
+    .screen.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .screen.exit {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,14,13,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      cursor: pointer;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--text);
+      background: var(--border);
+    }
+
+    /* ── HOME SCREEN ── */
+    #home {
+      background: var(--bg);
+    }
+
+    .home-inner {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      height: 100%;
+    }
+
+    .home-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 60px 60px 80px;
+      border-right: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 20px;
+    }
+
+    .home-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 4vw, 4.2rem);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .home-name em {
+      color: var(--muted);
+      font-size: 0.6em;
+      font-style: normal;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .home-role {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+      letter-spacing: 0.02em;
+    }
+
+    .home-bio {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #b0aba3;
+      max-width: 420px;
+      margin-bottom: 48px;
+    }
+
+    .meta-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .meta-item {
+      display: flex;
+      gap: 12px;
+      font-size: 0.82rem;
+    }
+    .meta-label {
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      min-width: 90px;
+    }
+    .meta-value {
+      color: #c9c5bc;
+    }
+
+    /* Right side – categories */
+    .home-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px 60px 60px;
+      gap: 20px;
+    }
+
+    .category-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      cursor: pointer;
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .category-card:hover {
+      transform: translateX(6px);
+    }
+    .category-card.gold:hover  { border-color: var(--accent-gold); background: rgba(201,168,76,0.05); }
+    .category-card.blue:hover  { border-color: var(--accent-blue); background: rgba(74,127,212,0.05); }
+    .category-card.green:hover { border-color: var(--accent-green); background: rgba(74,173,122,0.05); }
+
+    .cat-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .cat-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .cat-icon.gold  { background: rgba(201,168,76,0.12); }
+    .cat-icon.blue  { background: rgba(74,127,212,0.12); }
+    .cat-icon.green { background: rgba(74,173,122,0.12); }
+
+    .cat-text h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .cat-text p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .cat-arrow {
+      color: var(--border);
+      font-size: 1.2rem;
+      transition: color 0.2s;
+    }
+    .category-card:hover .cat-arrow {
+      color: var(--muted);
+    }
+
+    /* ── PROJECT SCREENS ── */
+    .proj-screen {
+      background: var(--bg);
+    }
+
+    .proj-inner {
+      flex: 1;
+      padding: 80px 0 0 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .proj-header {
+      padding: 40px 80px 30px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+      text-transform: uppercase;
+    }
+    .back-btn:hover { color: var(--text); }
+
+    .proj-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      line-height: 1.1;
+    }
+    .proj-header h2 span {
+      font-style: italic;
+      opacity: 0.5;
+    }
+    .proj-header p {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 0.93rem;
+    }
+
+    .proj-grid {
+      flex: 1;
+      overflow-y: auto;
+      padding: 36px 80px 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      align-content: start;
+    }
+
+    /* scrollbar */
+    .proj-grid::-webkit-scrollbar { width: 4px; }
+    .proj-grid::-webkit-scrollbar-track { background: transparent; }
+    .proj-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: transform 0.25s, border-color 0.25s;
+      animation: fadeUp 0.4s ease both;
+    }
+    .project-card:nth-child(1) { animation-delay: 0.05s; }
+    .project-card:nth-child(2) { animation-delay: 0.12s; }
+    .project-card:nth-child(3) { animation-delay: 0.19s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .project-card:hover { transform: translateY(-4px); }
+    .project-card.gold:hover  { border-color: var(--accent-gold); }
+    .project-card.blue:hover  { border-color: var(--accent-blue); }
+    .project-card.green:hover { border-color: var(--accent-green); }
+
+    .project-card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .project-card p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .tag.gold  { background: rgba(201,168,76,0.12); color: var(--accent-gold); }
+    .tag.blue  { background: rgba(74,127,212,0.12); color: var(--accent-blue); }
+    .tag.green { background: rgba(74,173,122,0.12); color: var(--accent-green); }
+
+    .proj-links {
+      display: flex;
+      gap: 16px;
+    }
+    .proj-links a {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .proj-links a:hover { opacity: 1; }
+    .proj-links a.gold  { color: var(--accent-gold); }
+    .proj-links a.blue  { color: var(--accent-blue); }
+    .proj-links a.green { color: var(--accent-green); }
+
+    /* ── CONTACT SCREEN ── */
+    #contact {
+      background: var(--bg);
+    }
+
+    .contact-inner {
+      flex: 1;
+      padding-top: 80px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .contact-box {
+      max-width: 600px;
+      width: 100%;
+      padding: 0 40px;
+      text-align: center;
+    }
+
+    .contact-box .eyebrow {
+      margin-bottom: 16px;
+    }
+
+    .contact-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 4vw, 3.8rem);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .contact-title em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .contact-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .contact-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      text-align: left;
+      transition: border-color 0.2s;
+    }
+    .contact-item:hover {
+      border-color: var(--accent-gold);
+    }
+    .contact-item .c-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .contact-item .c-value {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .contact-item a {
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .contact-item a:hover { text-decoration: underline; }
+
+    .contact-footer {
+      color: var(--border);
+      font-size: 0.78rem;
+      margin-top: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── RESUME SCREEN ── */
+    .resume-inner {
+      flex: 1;
+      padding-top: 80px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .resume-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    .resume-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .resume-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .upload-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-gold);
+      color: #0f0e0d;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .upload-btn:hover { opacity: 0.85; }
+
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .zoom-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .zoom-btn:hover {
+      border-color: var(--accent-gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    .zoom-level {
+      font-size: 0.8rem;
+      color: var(--muted);
+      min-width: 42px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .zoom-reset {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 0 12px;
+      height: 34px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.04em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .zoom-reset:hover { color: var(--text); border-color: var(--accent-gold); }
+
+    .resume-viewport {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px;
+      background: #1a1816;
+    }
+
+    .resume-viewport::-webkit-scrollbar { width: 6px; height: 6px; }
+    .resume-viewport::-webkit-scrollbar-track { background: transparent; }
+    .resume-viewport::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    .resume-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--muted);
+      height: 100%;
+      min-height: 300px;
+      text-align: center;
+    }
+
+    .resume-empty .empty-icon {
+      font-size: 3rem;
+      opacity: 0.4;
+    }
+
+    .resume-empty p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .resume-empty .drop-hint {
+      font-size: 0.78rem;
+      color: var(--border);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    #pdf-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      transform-origin: top center;
+      transition: transform 0.2s ease;
+    }
+
+    #pdf-container canvas {
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: block;
+    }
+
+    /* drag-over highlight */
+    .resume-viewport.dragover {
+      outline: 2px dashed var(--accent-gold);
+      outline-offset: -12px;
+      background: rgba(201,168,76,0.04);
+    }
+
+    /* ── GRID TEXTURE ── */
+    .grid-texture {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .screen > * { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+
+<div class="grid-texture"></div>
+
+<!-- ════════════ NAV ════════════ -->
+<nav>
+  <div class="nav-logo" onclick="goTo('home')">QAN</div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="goTo('home')">Home</button>
+    <button class="nav-btn" onclick="goTo('powerbi')">Power BI</button>
+    <button class="nav-btn" onclick="goTo('sql')">SQL</button>
+    <button class="nav-btn" onclick="goTo('ml')">ML</button>
+    <button class="nav-btn" onclick="goTo('contact')">Contact</button>
+    <button class="nav-btn" onclick="goTo('resume')">Resume</button>
+  </div>
+</nav>
+
+<!-- ════════════ HOME ════════════ -->
+<div class="screen active" id="home">
+  <div class="home-inner">
+    <!-- Biography -->
+    <div class="home-left">
+      <div class="eyebrow">Portfolio · 2026</div>
+      <h1 class="home-name">
+        Quynh-Anh<br>Nguyen
+        <em>Grace</em>
+      </h1>
+      <p class="home-role">Data Analyst &amp; ML Practitioner</p>
+      <p class="home-bio">
+        Transforming raw data into clear stories and predictive solutions.
+        Specialised in business intelligence, SQL data pipelines, and machine
+        learning — with a background in logistics and supply chain management.
+      </p>
+      <div class="meta-list">
+        <div class="meta-item">
+          <span class="meta-label">Location</span>
+          <span class="meta-value">Ho Chi Minh City, Vietnam</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Education</span>
+          <span class="meta-value">B.E. Logistics &amp; Supply Chain — VNU</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Email</span>
+          <span class="meta-value">quynhanh2230@gmail.com</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="home-right">
+      <p style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600;">Explore Projects</p>
+
+      <div class="category-card gold" onclick="goTo('powerbi')">
+        <div class="cat-left">
+          <div class="cat-icon gold">📊</div>
+          <div class="cat-text">
+            <h3>Power BI</h3>
+            <p>Interactive dashboards &amp; business intelligence</p>
+          </div>
+        </div>
+        <span class="cat-arrow">→</span>
+      </div>
+
+      <div class="category-card blue" onclick="goTo('sql')">
+        <div class="cat-left">
+          <div class="cat-icon blue">🗄️</div>
+          <div class="cat-text">
+            <h3>SQL</h3>
+            <p>Data cleaning, transformation &amp; analytics</p>
+          </div>
+        </div>
+        <span class="cat-arrow">→</span>
+      </div>
+
+      <div class="category-card green" onclick="goTo('ml')">
+        <div class="cat-left">
+          <div class="cat-icon green">🤖</div>
+          <div class="cat-text">
+            <h3>Machine Learning</h3>
+            <p>Predictive modeling &amp; forecasting</p>
+          </div>
+        </div>
+        <span class="cat-arrow">→</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ POWER BI ════════════ -->
+<div class="screen proj-screen" id="powerbi">
+  <div class="proj-inner">
+    <div class="proj-header">
+      <button class="back-btn" onclick="goTo('home')">← Back</button>
+      <h2>Power BI <span>/ Dashboards</span></h2>
+      <p>Interactive dashboards and business intelligence projects focused on data visualization and decision-making.</p>
+    </div>
+    <div class="proj-grid">
+      <div class="project-card gold">
+        <h3>Sales Performance Dashboard</h3>
+        <p>Built an executive dashboard tracking revenue, profit margins, and regional sales performance across multiple product lines.</p>
+        <div class="tags">
+          <span class="tag gold">Power BI</span>
+          <span class="tag gold">DAX</span>
+          <span class="tag gold">Data Modeling</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="gold">Live Demo</a>
+          <a href="#" class="gold">GitHub</a>
+        </div>
+      </div>
+      <div class="project-card gold">
+        <h3>HR Analytics Dashboard</h3>
+        <p>Visualized employee turnover, hiring trends, and workforce demographics to support data-driven HR decision-making.</p>
+        <div class="tags">
+          <span class="tag gold">Power BI</span>
+          <span class="tag gold">HR Analytics</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="gold">Live Demo</a>
+          <a href="#" class="gold">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SQL ════════════ -->
+<div class="screen proj-screen" id="sql">
+  <div class="proj-inner">
+    <div class="proj-header">
+      <button class="back-btn" onclick="goTo('home')">← Back</button>
+      <h2>SQL <span>/ Data Engineering</span></h2>
+      <p>SQL-based projects involving data cleaning, transformation, querying, and analytics.</p>
+    </div>
+    <div class="proj-grid">
+      <div class="project-card blue">
+        <h3>Customer Segmentation Analysis</h3>
+        <p>Analyzed customer purchasing behavior using advanced SQL queries and segmentation techniques on a PostgreSQL database.</p>
+        <div class="tags">
+          <span class="tag blue">SQL</span>
+          <span class="tag blue">PostgreSQL</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="blue">GitHub</a>
+        </div>
+      </div>
+      <div class="project-card blue">
+        <h3>Retail Data Cleaning Pipeline</h3>
+        <p>Developed SQL scripts for cleaning, transforming, and validating retail transaction data as part of an ETL workflow.</p>
+        <div class="tags">
+          <span class="tag blue">SQL</span>
+          <span class="tag blue">ETL</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="blue">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ML ════════════ -->
+<div class="screen proj-screen" id="ml">
+  <div class="proj-inner">
+    <div class="proj-header">
+      <button class="back-btn" onclick="goTo('home')">← Back</button>
+      <h2>Machine Learning <span>/ Predictive Models</span></h2>
+      <p>Predictive modeling and machine learning projects focused on forecasting and data-driven automation.</p>
+    </div>
+    <div class="proj-grid">
+      <div class="project-card green">
+        <h3>Sales Forecasting Model</h3>
+        <p>Built a time-series forecasting model to predict future sales trends, helping teams plan inventory and resources more effectively.</p>
+        <div class="tags">
+          <span class="tag green">Python</span>
+          <span class="tag green">Forecasting</span>
+          <span class="tag green">Machine Learning</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="green">GitHub</a>
+        </div>
+      </div>
+      <div class="project-card green">
+        <h3>Customer Churn Prediction</h3>
+        <p>Developed a classification model using scikit-learn to identify customers at risk of discontinuing services, improving retention strategy.</p>
+        <div class="tags">
+          <span class="tag green">Scikit-learn</span>
+          <span class="tag green">Classification</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="green">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ CONTACT ════════════ -->
+<div class="screen" id="contact">
+  <div class="contact-inner">
+    <div class="contact-box">
+      <div class="eyebrow">Get in Touch</div>
+      <h2 class="contact-title">Let's work<br><em>together.</em></h2>
+      <p class="contact-sub">
+        Open to data analyst roles, freelance projects, and collaborations.
+        Feel free to reach out through any of the channels below.
+      </p>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="c-label">Email</div>
+          <div class="c-value"><a href="mailto:quynhanh2230@gmail.com">quynhanh2230@gmail.com</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="c-label">Location</div>
+          <div class="c-value">Ho Chi Minh City, Vietnam</div>
+        </div>
+        <div class="contact-item">
+          <div class="c-label">GitHub</div>
+          <div class="c-value"><a href="https://github.com/KwinAng-22" target="_blank">KwinAng-22</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="c-label">LinkedIn</div>
+          <div class="c-value"><a href="#">View Profile</a></div>
+        </div>
+      </div>
+      <p class="contact-footer">© 2026 Quynh-Anh Nguyen · All rights reserved</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ RESUME ════════════ -->
+<div class="screen" id="resume">
+  <div class="resume-inner">
+    <div class="resume-toolbar">
+      <div class="resume-toolbar-left">
+        <span class="resume-title">Resume</span>
+        <button class="upload-btn" onclick="document.getElementById('pdf-input').click()">
+          ＋ Upload PDF
+        </button>
+        <input type="file" id="pdf-input" accept="application/pdf" style="display:none">
+      </div>
+      <div class="zoom-controls">
+        <button class="zoom-btn" onclick="changeZoom(-0.1)">−</button>
+        <span class="zoom-level" id="zoom-label">100%</span>
+        <button class="zoom-btn" onclick="changeZoom(0.1)">+</button>
+        <button class="zoom-reset" onclick="resetZoom()">Reset</button>
+      </div>
+    </div>
+
+    <div class="resume-viewport" id="resume-viewport">
+      <div class="resume-empty" id="resume-empty">
+        <div class="empty-icon">📄</div>
+        <p>Upload your resume PDF to preview it here</p>
+        <span class="drop-hint">or drag &amp; drop a file</span>
+      </div>
+      <div id="pdf-container"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  const screens = ['home','powerbi','sql','ml','contact','resume'];
+  let current = 'home';
+
+  function goTo(id) {
+    if (id === current) return;
+    const prev = document.getElementById(current);
+    const next = document.getElementById(id);
+    prev.classList.add('exit');
+    setTimeout(() => prev.classList.remove('active', 'exit'), 450);
+    next.classList.add('active');
+    current = id;
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const map = { home: 0, powerbi: 1, sql: 2, ml: 3, contact: 4, resume: 5 };
+    document.querySelectorAll('.nav-btn')[map[id]]?.classList.add('active');
+  }
+
+  // ── PDF viewer ──
+  let zoomLevel = 1.0;
+  const MIN_ZOOM = 0.4, MAX_ZOOM = 3.0;
+
+  function updateZoomLabel() {
+    document.getElementById('zoom-label').textContent = Math.round(zoomLevel * 100) + '%';
+    document.getElementById('pdf-container').style.transform = `scale(${zoomLevel})`;
+  }
+
+  function changeZoom(delta) {
+    zoomLevel = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoomLevel + delta));
+    updateZoomLabel();
+  }
+
+  function resetZoom() {
+    zoomLevel = 1.0;
+    updateZoomLabel();
+  }
+
+  // mouse wheel zoom (Ctrl/Cmd + scroll)
+  document.getElementById('resume-viewport').addEventListener('wheel', e => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      changeZoom(e.deltaY < 0 ? 0.1 : -0.1);
+    }
+  }, { passive: false });
+
+  async function renderPDF(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const container = document.getElementById('pdf-container');
+    container.innerHTML = '';
+    document.getElementById('resume-empty').style.display = 'none';
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 1.8 });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      container.appendChild(canvas);
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+    }
+  }
+
+  document.getElementById('pdf-input').addEventListener('change', e => {
+    if (e.target.files[0]) renderPDF(e.target.files[0]);
+  });
+
+  // drag & drop
+  const viewport = document.getElementById('resume-viewport');
+  viewport.addEventListener('dragover', e => { e.preventDefault(); viewport.classList.add('dragover'); });
+  viewport.addEventListener('dragleave', () => viewport.classList.remove('dragover'));
+  viewport.addEventListener('drop', e => {
+    e.preventDefault();
+    viewport.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === 'application/pdf') renderPDF(file);
+  });
+</script>
+
+</body>
+</html>
