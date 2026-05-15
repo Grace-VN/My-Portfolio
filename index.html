@@ -853,6 +853,32 @@
   </div>
 </div>
 
+<!-- ════════════ RESUME ════════════ -->
+<div class="screen" id="resume">
+  <div class="resume-inner">
+    <div class="resume-toolbar">
+      <div class="resume-toolbar-left">
+        <span class="resume-title">Resume</span>
+        <span id="resume-filename" style="font-size:0.78rem;color:var(--muted);"></span>
+      </div>
+      <div class="zoom-controls">
+        <button class="zoom-btn" onclick="changeZoom(-0.1)">−</button>
+        <span class="zoom-level" id="zoom-label">100%</span>
+        <button class="zoom-btn" onclick="changeZoom(0.1)">+</button>
+        <button class="zoom-reset" onclick="resetZoom()">Reset</button>
+      </div>
+    </div>
+
+    <div class="resume-viewport" id="resume-viewport">
+      <div class="resume-empty" id="resume-empty">
+        <div class="empty-icon">⏳</div>
+        <p>Loading resume...</p>
+      </div>
+      <div id="pdf-container"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ════════════ CONTACT ════════════ -->
 <div class="screen" id="contact">
   <div class="contact-inner">
@@ -886,32 +912,6 @@
   </div>
 </div>
 
-<!-- ════════════ RESUME ════════════ -->
-<div class="screen" id="resume">
-  <div class="resume-inner">
-    <div class="resume-toolbar">
-      <div class="resume-toolbar-left">
-        <span class="resume-title">Resume</span>
-        <span id="resume-filename" style="font-size:0.78rem;color:var(--muted);"></span>
-      </div>
-      <div class="zoom-controls">
-        <button class="zoom-btn" onclick="changeZoom(-0.1)">−</button>
-        <span class="zoom-level" id="zoom-label">100%</span>
-        <button class="zoom-btn" onclick="changeZoom(0.1)">+</button>
-        <button class="zoom-reset" onclick="resetZoom()">Reset</button>
-      </div>
-    </div>
-
-    <div class="resume-viewport" id="resume-viewport">
-      <div class="resume-empty" id="resume-empty">
-        <div class="empty-icon">⏳</div>
-        <p>Loading resume...</p>
-      </div>
-      <div id="pdf-container"></div>
-    </div>
-  </div>
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -937,25 +937,6 @@
     document.querySelectorAll('.nav-btn')[map[id]]?.classList.add('active');
     if (id === 'resume' && !pdfLoaded) loadResume();
   }
-
-  // ── Zoom ──
-  let zoomLevel = 1.0;
-  const MIN_ZOOM = 0.3, MAX_ZOOM = 3.0;
-
-  function updateZoomLabel() {
-    document.getElementById('zoom-label').textContent = Math.round(zoomLevel * 100) + '%';
-    document.getElementById('pdf-container').style.transform = `scale(${zoomLevel})`;
-    document.getElementById('pdf-container').style.transformOrigin = 'top center';
-  }
-  function changeZoom(delta) {
-    zoomLevel = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, +(zoomLevel + delta).toFixed(1)));
-    updateZoomLabel();
-  }
-  function resetZoom() { zoomLevel = 1.0; updateZoomLabel(); }
-
-  document.getElementById('resume-viewport').addEventListener('wheel', e => {
-    if (e.ctrlKey || e.metaKey) { e.preventDefault(); changeZoom(e.deltaY < 0 ? 0.1 : -0.1); }
-  }, { passive: false });
 
   // ── Load & render PDF via PDF.js ──
   async function loadResume() {
