@@ -472,126 +472,6 @@
       letter-spacing: 0.04em;
     }
 
-    /* ── RESUME SCREEN ── */
-    .resume-inner {
-      flex: 1;
-      padding-top: 80px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .resume-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 48px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      flex-shrink: 0;
-    }
-
-    .resume-toolbar-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .resume-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .upload-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent-gold);
-      color: #0f0e0d;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 20px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      letter-spacing: 0.02em;
-    }
-    .upload-btn:hover { opacity: 0.85; }
-
-
-
-    .resume-viewport {
-      flex: 1;
-      overflow: auto;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 40px;
-      background: #1a1816;
-    }
-
-    .resume-viewport::-webkit-scrollbar { width: 6px; height: 6px; }
-    .resume-viewport::-webkit-scrollbar-track { background: transparent; }
-    .resume-viewport::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-
-    .resume-empty {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      color: var(--muted);
-      height: 100%;
-      min-height: 300px;
-      text-align: center;
-    }
-
-    .resume-empty .empty-icon {
-      font-size: 3rem;
-      opacity: 0.4;
-    }
-
-    .resume-empty p {
-      font-size: 0.9rem;
-      line-height: 1.7;
-      max-width: 280px;
-    }
-
-    .resume-empty .drop-hint {
-      font-size: 0.78rem;
-      color: var(--border);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    #pdf-container {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      align-items: center;
-      transform-origin: top center;
-      transition: transform 0.2s ease;
-    }
-
-    #pdf-container canvas {
-      border-radius: 8px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      display: block;
-    }
-
-    /* drag-over highlight */
-    .resume-viewport.dragover {
-      outline: 2px dashed var(--accent-gold);
-      outline-offset: -12px;
-      background: rgba(201,168,76,0.04);
-    }
-
     /* ── GRID TEXTURE ── */
     .grid-texture {
       position: fixed;
@@ -620,7 +500,6 @@
     <button class="nav-btn" onclick="goTo('powerbi')">Power BI</button>
     <button class="nav-btn" onclick="goTo('sql')">SQL</button>
     <button class="nav-btn" onclick="goTo('ml')">ML</button>
-    <button class="nav-btn" onclick="goTo('resume')">Resume</button>
     <button class="nav-btn" onclick="goTo('contact')">Contact</button>
   </div>
 </nav>
@@ -707,27 +586,18 @@
     </div>
     <div class="proj-grid">
       <div class="project-card gold">
-        <h3>Supply Chain Make vs Buy Analysis</h3>
-
-        <p>
-          Built an interactive Power BI decision-support system for Tenate Industries to evaluate Make vs Buy sourcing strategies. 
-          The solution compares supplier quotes with internal manufacturing costs using dynamic scenario analysis, helping identify the lowest total cost option across varying production volumes.
-        </p>
-
+        <h3>Sales Performance Dashboard</h3>
+        <p>Built an executive dashboard tracking revenue, profit margins, and regional sales performance across multiple product lines.</p>
         <div class="tags">
           <span class="tag gold">Power BI</span>
           <span class="tag gold">DAX</span>
-          <span class="tag gold">Scenario Analysis</span>
-          <span class="tag gold">Supply Chain Analytics</span>
           <span class="tag gold">Data Modeling</span>
         </div>
-
         <div class="proj-links">
-          <a href="https://github.com/Grace-VN/Power-BI---Supply-Chain-Analysis" class="gold">GitHub</a>
-          <a href="#" class="gold">Dashboard Preview</a>
+          <a href="#" class="gold">Live Demo</a>
+          <a href="#" class="gold">GitHub</a>
         </div>
       </div>
-    </div>
       <div class="project-card gold">
         <h3>HR Analytics Dashboard</h3>
         <p>Visualized employee turnover, hiring trends, and workforce demographics to support data-driven HR decision-making.</p>
@@ -848,96 +718,28 @@
   </div>
 </div>
 
-<!-- ════════════ RESUME ════════════ -->
-<div class="screen" id="resume">
-  <div class="resume-inner">
-    <div class="resume-toolbar">
-      <div class="resume-toolbar-left">
-        <span class="resume-title">Resume</span>
-        <span id="resume-filename" style="font-size:0.78rem;color:var(--muted);"></span>
-      </div>
-    </div>
-
-    <div class="resume-viewport" id="resume-viewport">
-      <div class="resume-empty" id="resume-empty">
-        <div class="empty-icon">⏳</div>
-        <p>Loading resume...</p>
-      </div>
-      <div id="pdf-container"></div>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-  const FILE_ID = '1QsXX5tmJBOSI1eh_lwX97fq67HcqipfB';
-  const PDF_URL = `https://drive.google.com/uc?export=download&id=${FILE_ID}`;
-
-  const screens = ['home','powerbi','sql','ml','contact','resume'];
+  const screens = ['home','powerbi','sql','ml','contact'];
   let current = 'home';
-  let pdfLoaded = false;
 
   function goTo(id) {
     if (id === current) return;
+
     const prev = document.getElementById(current);
     const next = document.getElementById(id);
+
     prev.classList.add('exit');
-    setTimeout(() => prev.classList.remove('active', 'exit'), 450);
+    setTimeout(() => {
+      prev.classList.remove('active', 'exit');
+    }, 450);
+
     next.classList.add('active');
     current = id;
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    const map = { home: 0, powerbi: 1, sql: 2, ml: 3, resume: 4, contact: 5 };
+
+    // update nav
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    const map = { home: 0, powerbi: 1, sql: 2, ml: 3, contact: 4 };
     document.querySelectorAll('.nav-btn')[map[id]]?.classList.add('active');
-    if (id === 'resume' && !pdfLoaded) loadResume();
-  }
-
-  // ── Load & render PDF via PDF.js ──
-  async function loadResume() {
-    const emptyEl = document.getElementById('resume-empty');
-    const container = document.getElementById('pdf-container');
-    emptyEl.querySelector('p').textContent = 'Loading resume…';
-
-    try {
-      const pdf = await pdfjsLib.getDocument({
-        url: PDF_URL,
-        withCredentials: false
-      }).promise;
-
-      emptyEl.style.display = 'none';
-      container.innerHTML = '';
-
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 2.0 });
-        const canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        canvas.style.maxWidth = '100%';
-        container.appendChild(canvas);
-        await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-      }
-
-      document.getElementById('resume-filename').textContent = 'Quynh-Anh Nguyen — Resume';
-      pdfLoaded = true;
-
-    } catch (err) {
-      // CORS fallback — embed via Google's own viewer
-      emptyEl.style.display = 'none';
-      const vp = document.getElementById('resume-viewport');
-      vp.style.padding = '0';
-      vp.style.alignItems = 'stretch';
-      container.style.cssText = 'width:100%;height:100%;';
-      container.innerHTML = `<iframe
-        src="https://drive.google.com/file/d/${FILE_ID}/preview"
-        style="width:100%;height:100%;border:none;"
-        allow="autoplay">
-      </iframe>`;
-      document.getElementById('resume-filename').textContent = 'Quynh-Anh Nguyen — Resume';
-      pdfLoaded = true;
-    }
   }
 </script>
 
