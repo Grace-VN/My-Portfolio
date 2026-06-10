@@ -864,28 +864,34 @@ Built an end-to-end machine learning pipeline for customer churn prediction usin
       <div class="project-card green">
         <h3>British Airways — Customer Experience Analysis & Recommendation Prediction</h3>
         <p>
-          Built an end-to-end NLP and machine learning pipeline on 10,000+ British Airways customer reviews,
-          outperforming a published baseline by replacing rule-based sentiment with LLM semantic embeddings.
-          Extracted aspect-level sentiment across six service dimensions (staff, seat comfort, food, punctuality,
-          ground service, value), clustered reviews into experience archetypes using KMeans on LLM embeddings,
-          and auto-named each cluster via LLM prompting. Combined LLM-derived features with structured ratings
-          to predict recommendation likelihood, quantifying the incremental predictive value of semantic
-          understanding over tabular features alone. Final explainability layer includes SHAP analysis and
-          an LLM-generated executive report surfacing top service failure areas and actionable recommendations
-          for the airline.
+          Built an end-to-end ML and GenAI pipeline on 3,701 British Airways passenger reviews,
+          combining predictive modelling, causal inference, and retrieval-augmented generation.
+          Extracted aspect-level sentiment across 8 service dimensions using rule-based and
+          DeBERTa-ABSA methods; computed VADER holistic sentiment as complementary features.
+          Trained and Optuna-tuned GradientBoosting models for recommendation prediction
+          (ROC-AUC 0.972) and satisfaction score regression (R² 0.982). Applied DoWhy + EconML
+          to move beyond correlation — finding that a one-unit improvement in ValueForMoney
+          causally increases recommendation probability by 12.7pp, and CabinStaffService
+          causally drives satisfaction by 0.30 points, both surviving placebo and random
+          common cause refutation tests. Segmented passengers into 6 experience archetypes
+          via HDBSCAN on sentence-transformer embeddings, auto-named and analysed by
+          Llama-3 (Groq). Built a RAG system over the full review corpus using ChromaDB,
+          enabling plain-English queries grounded in real passenger evidence. SHAP
+          explainability and an LLM-generated executive report surface top failure areas
+          and prioritised recommendations.
         </p>
         <div class="tags">
-          <span class="tag green">NLP</span>
-          <span class="tag green">LLM Embeddings</span>
-          <span class="tag green">Clustering (KMeans)</span>
-          <span class="tag green">Sentiment Analysis</span>
-          <span class="tag green">Aspect Extraction</span>
-          <span class="tag green">SHAP</span>
-          <span class="tag green">LLM Narrative Generation</span>
-          <span class="tag green">t-SNE / PCA</span>
+          <span class="tag green">Predictive ML</span>
+          <span class="tag green">Causal Inference (DoWhy + EconML)</span>
+          <span class="tag green">RAG (ChromaDB)</span>
+          <span class="tag green">LLM (Llama-3 / Groq)</span>
+          <span class="tag green">NLP & Aspect Extraction</span>
+          <span class="tag green">SHAP Explainability</span>
+          <span class="tag green">Clustering (HDBSCAN)</span>
+          <span class="tag green">Optuna Hyperparameter Tuning</span>
         </div>
         <div class="proj-links">
-          <a href="https://github.com/Grace-VN/-Beyond-Star-Ratings-LLM-Powered-Customer-Experience-Analysis-and-Rebooking-Prediction" class="github-btn green" target="_blank">
+          <a href="https://github.com/Grace-VN/Customer-Review-Sentiment-Analysis-and-Recommendation-Prediction-by-LLM" class="github-btn green" target="_blank">
             <svg><use href="#gh-icon"/></svg>GitHub
           </a>
         </div>
